@@ -1,5 +1,12 @@
 package rocks.zipcode;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static java.util.Arrays.asList;
+
 /**
  * ntz main command.
  */
@@ -12,8 +19,8 @@ public final class Notez {
     }
     /**
      * Says hello to the world.
-     * 
-     * @param args The arguments of the program.
+     *
+     * @param argv The arguments of the program.
      */
     public static void main(String argv[]) {
         boolean _debug = true;
@@ -32,11 +39,13 @@ public final class Notez {
 
         /*
          * You will spend a lot of time right here.
-         * 
+         *
          * instead of loadDemoEntries, you will implement a series
          * of method calls that manipulate the Notez engine.
          * See the first one:
          */
+
+
         ntzEngine.loadDemoEntries();
 
         ntzEngine.saveDatabase();
@@ -56,8 +65,27 @@ public final class Notez {
 
     }
 
-    private void addToCategory(String string, String[] argv) {
+    public void addToCategory(String string, String[] argv) {
+        String[] newArgv = Arrays.copyOfRange(argv,1, argv.length);
+        int i = 1;
+        NoteList test = new NoteList();
+
+        if (!filemap.containsKey("\t" + string)){
+            filemap.put("\t" + string, new NoteList());
+            for(String arg: newArgv) {
+                filemap.get("\t" + string).add(i + ") " + arg);
+                i++;
+            }
+        } else {
+            for(String arg: newArgv) {
+                filemap.get("\t" + string).add(i + ") " + arg);
+                i++;
+            }
+        }
+        printResults();
     }
+
+
 
     private void saveDatabase() {
         filemap.save();
@@ -67,8 +95,8 @@ public final class Notez {
         filemap.load();
     }
 
-    public void printResults() {
-        System.out.println(this.filemap.toString());
+    public String printResults() {
+        return this.filemap.toString();
     }
 
     public void loadDemoEntries() {
@@ -77,6 +105,34 @@ public final class Notez {
         filemap.put("category3", new NoteList("Did you buy bread AND eggs?"));
         filemap.put("anotherNote", new NoteList("Hello from ZipCode!"));
     }
+
+    public void forget() {
+    }
+
+    public void editOrReplace() {
+    }
+
+//    public void createOrAppend(String category, String text, String[] argv) {
+//            if(asList(argv).contains("-c") && filemap.containsKey()){
+//                filemap.get("General").add(string);
+//            } else if (asList(argv).contains("-r")){
+//                filemap.put("General", new NoteList(string));
+//            }
+//        }
+//    }
+
+//    public void remember(String string, String[] argv) {
+//    List<String> argList = new ArrayList.
+//    argv =
+//            if(filemap.containsKey(string)){
+//                for(String arg: argv) {
+//                    filemap.get(string).add(arg));
+//                }
+//            } else if (asList(argv).contains("-r")){
+//                filemap.put("General", new NoteList(string));
+//            }
+//
+//    }
     /*
      * Put all your additional methods that implement commands like forget here...
      */
